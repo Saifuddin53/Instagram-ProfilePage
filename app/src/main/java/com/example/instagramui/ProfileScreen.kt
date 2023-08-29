@@ -1,14 +1,13 @@
 package com.example.instagramui
 
+import android.graphics.drawable.Icon
 import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScopeInstance.weight
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScopeInstance.weight
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,10 +47,14 @@ fun ProfileScreen() {
     Column(modifier = Modifier.fillMaxSize(),
         ){
         TopBar()
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         ProfileSection()
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         DescriptionSection()
+        Spacer(modifier = Modifier.height(14.dp))
+        ButtonSection()
+        Spacer(modifier = Modifier.height(24.dp))
+        StoriesSection()
     }
 }
 
@@ -114,6 +121,104 @@ fun DescriptionSection(){
 }
 
 @Composable
+fun ButtonSection() {
+    Row(
+        horizontalArrangement = Arrangement.Center
+        , verticalAlignment = Alignment.CenterVertically
+        ,modifier = Modifier.padding(horizontal = 8.dp)
+    ) {
+        val minWidth = 100.dp
+        val height = 20.dp
+
+        ButtonMaker(
+            "Following",
+            modifier = Modifier
+                .width(minWidth)
+                .height(height)
+        )
+
+        ButtonMaker(
+            "Message",
+            modifier = Modifier
+                .width(minWidth)
+                .height(height)
+        )
+
+        ButtonMaker(
+            "Email",
+            modifier = Modifier
+                .width(minWidth)
+                .height(height)
+        )
+
+        ButtonMaker(
+            icon = Icons.Default.KeyboardArrowDown,
+            modifier = Modifier
+                .height(height)
+        )
+    }
+}
+
+@Composable
+fun ButtonMaker(text: String? = null,
+                icon: ImageVector? = null,
+                modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Center
+        ,verticalAlignment = Alignment.CenterVertically
+        ,modifier = modifier
+            .padding(horizontal = 8.dp)
+            .border(
+                width = 1.dp,
+                color = Color.Gray,
+                shape = RoundedCornerShape(5.dp)
+            )
+    ){
+        if(text != null){
+            Text(
+                text = text
+                , fontSize = 12.sp
+                , fontWeight = FontWeight.SemiBold
+            )
+        }
+        if(icon != null){
+            androidx.compose.material3.Icon(imageVector = icon
+                , contentDescription = null
+                , tint = Color.Black)
+        }
+    }
+}
+
+@Composable
+fun StoriesSection(){
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+    ) {
+        RoundImage(
+            image = painterResource(id = R.drawable.youtube),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .weight(1f))
+        RoundImage(
+            image = painterResource(id = R.drawable.qa),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .weight(1f))
+        RoundImage(
+            image = painterResource(id = R.drawable.discord),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .weight(1f))
+        RoundImage(
+            image = painterResource(id = R.drawable.telegram),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .weight(1f))
+    }
+}
+
+@Composable
 fun LinkSection() {
     val uri = "https://www.youtube.com/channel/UCqF0PCpBMC3-kcnaQvG1hqg"
     val hyperlinkText = uri
@@ -143,6 +248,7 @@ fun LinkSection() {
 
 @Composable
 fun FollowingSection(){
+
     val annotatedString = buildAnnotatedString {
 
         append("Followed by ")
@@ -156,8 +262,7 @@ fun FollowingSection(){
     }
 
     Row(verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-        ,modifier = Modifier.weight(7f)) {
+        horizontalArrangement = Arrangement.Center) {
         Text(text = annotatedString, modifier = Modifier)
     }
 }
